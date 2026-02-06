@@ -16,41 +16,41 @@ const uploadRoutes = require("./routes/uploadRoutes");
 
 const app = express();
 
-// Sử dụng Middlewares
-app.use(cors()); // Cho phép các domain khác gọi đến API của bạn
-app.use(express.json()); // Giúp express hiểu được dữ liệu JSON từ client gửi lên
+// Middlewares
+app.use(cors());
+app.use(express.json());
 
-// Route chính
+// Route test
 app.get("/", (req, res) => {
   res.send("API đang chạy...");
 });
 
-// Sử dụng các routes đã định nghĩa
-app.use(express.static("public")); // Để phục vụ các file tĩnh như hình ảnh
+// Static files
+app.use(express.static("public"));
+
+// Routes
 app.use("/api/properties", propertyRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/contact", contactRoutes);
-app.use("/api/auth", authRoutes); // Đăng ký và đăng nhập người dùng
-app.use("/api/stats", statsRoutes); // Thống kê tổng quan
+app.use("/api/auth", authRoutes);
+app.use("/api/stats", statsRoutes);
 app.use("/api/uploads", uploadRoutes);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
-
-// Chỉ khởi động server khi đã kết nối DB thành công
+// 🚀 START SERVER (CHỈ 1 LẦN)
 const startServer = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("✅ Đã kết nối tới MongoDB!");
+
     app.listen(PORT, () => {
-      console.log(`🚀 Server đang lắng nghe trên cổng ${PORT}`);
+      console.log(`🚀 Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error("❌ Lỗi kết nối MongoDB:", error);
+    process.exit(1);
   }
 };
 
