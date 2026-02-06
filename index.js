@@ -37,6 +37,10 @@ app.use("/api/uploads", uploadRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
 // Chỉ khởi động server khi đã kết nối DB thành công
 const startServer = async () => {
   try {
